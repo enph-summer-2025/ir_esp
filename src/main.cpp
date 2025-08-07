@@ -99,9 +99,17 @@ void loop()
     }
   }
 
+  // int maxValIndex = 0;
+  // for (int i = 0; i < maxBinIndex; i++) {
+  //   if (vReal[i] > vReal[maxValIndex]) {
+  //     maxValIndex = i;
+  //   }
+  // }
+
+
     // Hysteresis thresholds
-  const float thresholdHigh = 75000.0f; // Trigger ON above this value
-  const float thresholdLow  = 70000.0f; // Trigger OFF below this value
+  const float thresholdHigh = isHigh ? 75000.0f: 32500.0f; // Trigger ON above this value
+  const float thresholdLow  = isHigh ? 70000.0f: 29000.0f; // Trigger OFF below this value
   // bool outputState = false;      // Remember last state
 
   // Update state with hysteresis
@@ -117,8 +125,10 @@ void loop()
   // Write digital output
   digitalWrite(DAC_PIN, outputState ? HIGH : LOW);
 
-  Serial.printf("Mode: %s | Smoothed (Max in Range): %.2f | Output: %d\n",
-                isHigh ? "1kHz" : "10kHz", smoothedValue, outputState);
+
+
+Serial.printf("Mode: %s | Smoothed (Max in Range): %.2f | Output: %d\n",
+              isHigh ? "1kHz" : "10kHz", smoothedValue, outputState);
   // Enforce fixed loop timing
   unsigned long cycleTime = micros() - cycleStart;
   if (cycleTime < desiredCycleUs)
